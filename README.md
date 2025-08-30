@@ -13,18 +13,18 @@ Automatic commit package for Python projects. Automatically commits changes at s
 
 ## Installation
 
-### From Source
+### From Local Source
 
 ```bash
-git clone https://github.com/yourusername/gravitycommit.git
-cd gravitycommit
+# If you have the source code locally
+cd /path/to/gravitycommit
 pip install -e .
 ```
 
-### From PyPI (when published)
+### Direct Installation
 
 ```bash
-pip install gravitycommit
+pip install /path/to/gravitycommit
 ```
 
 ### Windows Requirements
@@ -32,7 +32,7 @@ pip install gravitycommit
 For Windows service support, install the optional Windows dependencies:
 
 ```bash
-pip install gravitycommit[windows]
+pip install /path/to/gravitycommit[windows]
 # or if installing from source:
 pip install -e .[windows]
 ```
@@ -196,7 +196,10 @@ The package installs a systemd service that:
 
 ### Windows
 
-Windows service support is planned for future releases.
+Windows service support is implemented using the Windows Service Manager. Requires:
+- Administrator privileges for service installation
+- pywin32 package (`pip install pywin32`)
+- Windows Services must be enabled in your system
 
 ## Development
 
@@ -225,11 +228,12 @@ python -m pytest
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
+1. Create a feature branch from the main branch
+2. Make your changes
+3. Add tests if applicable
+4. Test your changes thoroughly
+5. Commit your changes with descriptive messages
+6. Merge or submit your changes according to project workflow
 
 ## License
 
@@ -270,6 +274,9 @@ MIT License - see LICENSE file for details
 ## Roadmap
 
 - [x] Windows service support
+- [x] Linux systemd support
+- [x] Cross-platform compatibility
+- [x] Intelligent commit message generation
 - [ ] macOS support
 - [ ] Custom commit message templates
 - [ ] Git hooks integration
