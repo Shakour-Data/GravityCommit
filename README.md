@@ -1,1 +1,194 @@
 # GravityCommit
+
+Automatic commit package for Python projects. Automatically commits changes at specified intervals when your project is open in an editor.
+
+## Features
+
+- 🚀 Automatic commits at configurable intervals
+- 📝 Intelligent commit message generation
+- 👁️ Only commits when project is open in an editor
+- 🔧 Cross-platform support (Linux, Windows)
+- ⚙️ System service integration
+- 🎯 Git-aware change detection
+
+## Installation
+
+### From Source
+
+```bash
+git clone https://github.com/yourusername/gravitycommit.git
+cd gravitycommit
+pip install -e .
+```
+
+### From PyPI (when published)
+
+```bash
+pip install gravitycommit
+```
+
+## Requirements
+
+- Python 3.7+
+- Git repository
+- Linux: systemd (for service management)
+- Windows: Administrator privileges (for service management)
+
+## Quick Start
+
+1. Navigate to your git project:
+```bash
+cd /path/to/your/project
+```
+
+2. Setup automatic commits:
+```bash
+autocommit setup . --interval 15
+```
+
+This will:
+- Create a `.autocommit` configuration file
+- Install a system service
+- Start monitoring for changes every 15 minutes
+
+3. Check status:
+```bash
+autocommit status .
+```
+
+## Usage
+
+### Setup Command
+
+Setup automatic commits for a project:
+
+```bash
+autocommit setup /path/to/project --interval 10
+```
+
+Options:
+- `--interval`: Commit interval in minutes (default: 10)
+
+### Remove Command
+
+Remove automatic commits from a project:
+
+```bash
+autocommit remove /path/to/project
+```
+
+### Status Command
+
+Check the current status:
+
+```bash
+autocommit status /path/to/project
+```
+
+Shows:
+- Commit interval
+- Service running status
+- Project open status
+
+## How It Works
+
+1. **Project Monitoring**: Detects when your project is open in supported editors (VS Code, Atom, Sublime, etc.)
+2. **Change Detection**: Monitors git status for uncommitted changes
+3. **Smart Commits**: Only commits when changes exist and project is active
+4. **Message Generation**: Creates meaningful commit messages based on file types and changes
+5. **Service Management**: Runs as a background service that survives system restarts
+
+## Supported Editors
+
+- Visual Studio Code
+- Atom
+- Sublime Text
+- Vim/Neovim
+- Emacs
+- PyCharm
+- IntelliJ IDEA
+- And many more...
+
+## Configuration
+
+Configuration is stored in `.autocommit` file in your project root:
+
+```json
+{
+  "interval": 10
+}
+```
+
+## System Service
+
+### Linux (systemd)
+
+The package installs a systemd service that:
+- Starts automatically on boot
+- Runs under your user account
+- Monitors your project continuously
+
+### Windows
+
+Windows service support is planned for future releases.
+
+## Development
+
+### Project Structure
+
+```
+gravitycommit/
+├── autocommit/
+│   ├── __init__.py
+│   ├── cli.py              # Command line interface
+│   ├── config_manager.py   # Configuration management
+│   ├── commit_generator.py # Commit message generation
+│   ├── git_operations.py   # Git operations
+│   ├── scheduler.py        # Task scheduling
+│   ├── project_monitor.py  # Editor detection
+│   └── daemon_manager.py   # Service management
+├── setup.py
+└── README.md
+```
+
+### Running Tests
+
+```bash
+python -m pytest
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
+
+## License
+
+MIT License - see LICENSE file for details
+
+## Troubleshooting
+
+### Service won't start
+- Ensure you have sudo/administrator privileges
+- Check system logs: `journalctl -u autocommit-*` (Linux)
+
+### Commits not happening
+- Verify project is open in a supported editor
+- Check git status: `git status`
+- Review service status: `autocommit status /path/to/project`
+
+### Permission errors
+- Linux: Ensure user has access to `/etc/systemd/system/`
+- Windows: Run commands as administrator
+
+## Roadmap
+
+- [ ] Windows service support
+- [ ] macOS support
+- [ ] Custom commit message templates
+- [ ] Git hooks integration
+- [ ] Web interface for monitoring
+- [ ] Plugin system for custom editors
