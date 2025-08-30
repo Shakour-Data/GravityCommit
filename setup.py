@@ -32,6 +32,9 @@ setup(
         "psutil>=5.8.0",
         "click>=8.0.0",
     ],
+    extras_require={
+        "windows": ["pywin32>=227"],
+    },
     entry_points={
         "console_scripts": [
             "autocommit=autocommit.cli:main",

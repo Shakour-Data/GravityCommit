@@ -87,9 +87,55 @@ class DaemonManager:
     def _install_windows_service(self) -> bool:
         """Install Windows service"""
         try:
-            # This would require pywin32 or similar
-            # For now, return False as it's more complex
-            print("Windows service installation not implemented yet")
+            import win32serviceutil
+            import win32service
+            import win32event
+            import servicemanager
+            import socket
+
+            # Create the service class
+            class AutoCommitService(win32serviceutil.ServiceFramework):
+                _svc_name_ = self.service_name
+                _svc_display_name_ = f"AutoCommit Service for {self.project_path.name}"
+                _svc_description_ = f"Automatically commits changes for {self.project_path}"
+
+                def __init__(self, args):
+                    win32serviceutil.ServiceFramework.__init__(self, args)
+                    self.hWaitStop = win32event.CreateEvent(None, 0, 0, None)
+                    socket.setdefaulttimeout(60)
+
+                def SvcStop(self):
+                    self.ReportServiceStatus(win32service.SERVICE_STOP_PENDING)
+                    win32event.SetEvent(self.hWaitStop)
+
+                def SvcDoRun(self):
+                    servicemanager.LogMsg(servicemanager.EVENTLOG_INFORMATION_TYPE,
+                                        servicemanager.PYS_SERVICE_STARTED,
+                                        (self._svc_name_, ''))
+                    self.main()
+
+                def main(self):
+                    # Import here to avoid circular imports
+                    from .cli import daemon
+                    import sys
+                    # Redirect daemon function call
+                    sys.argv = ['autocommit', 'daemon', str(self.project_path)]
+                    daemon.callback()
+
+            # Install the service
+            win32serviceutil.InstallService(
+                AutoCommitService,
+                self.service_name,
+                f"AutoCommit Service for {self.project_path.name}",
+                startType=win32service.SERVICE_AUTO_START
+            )
+
+            # Start the service
+            win32serviceutil.StartService(self.service_name)
+
+            return True
+        except ImportError:
+            print("pywin32 not installed. Install with: pip install pywin32")
             return False
         except Exception as e:
             print(f"Failed to install Windows service: {e}")
@@ -98,7 +144,12 @@ class DaemonManager:
     def _uninstall_windows_service(self) -> bool:
         """Uninstall Windows service"""
         try:
-            print("Windows service uninstallation not implemented yet")
+            import win32serviceutil
+            win32serviceutil.StopService(self.service_name)
+            win32serviceutil.RemoveService(self.service_name)
+            return True
+        except ImportError:
+            print("pywin32 not installed. Install with: pip install pywin32")
             return False
         except Exception as e:
             print(f"Failed to uninstall Windows service: {e}")
@@ -106,7 +157,15 @@ class DaemonManager:
 
     def _is_windows_service_running(self) -> bool:
         """Check if Windows service is running"""
-        return False
+        try:
+            import win32serviceutil
+            status = win32serviceutil.QueryServiceStatus(self.service_name)
+            return status[1] == win32service.SERVICE_RUNNING
+        except ImportError:
+            print("pywin32 not installed. Install with: pip install pywin32")
+            return False
+        except Exception:
+            return False
 
     def _generate_systemd_service(self) -> str:
         """Generate systemd service file content"""

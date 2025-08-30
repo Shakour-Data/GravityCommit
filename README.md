@@ -27,6 +27,18 @@ pip install -e .
 pip install gravitycommit
 ```
 
+### Windows Requirements
+
+For Windows service support, install the optional Windows dependencies:
+
+```bash
+pip install gravitycommit[windows]
+# or if installing from source:
+pip install -e .[windows]
+```
+
+This will install `pywin32` which is required for Windows service management.
+
 ## Requirements
 
 - Python 3.7+
@@ -89,6 +101,60 @@ Shows:
 - Commit interval
 - Service running status
 - Project open status
+
+## Usage Examples
+
+### Basic Setup
+
+```bash
+# Setup auto-commit for current directory with 15-minute intervals
+autocommit setup . --interval 15
+
+# Check status
+autocommit status .
+
+# Remove auto-commit from project
+autocommit remove .
+```
+
+### Advanced Usage
+
+```bash
+# Setup for a specific project with custom interval
+autocommit setup ~/projects/my-app --interval 30
+
+# Monitor multiple projects
+autocommit status ~/projects/my-app
+autocommit status ~/projects/website
+```
+
+### Integration with Development Workflow
+
+```bash
+# In your project directory
+cd /path/to/your/project
+
+# Initialize git if not already done
+git init
+git add .
+git commit -m "Initial commit"
+
+# Setup auto-commit
+autocommit setup . --interval 20
+
+# Continue working - commits will happen automatically
+# when the project is open in your editor
+```
+
+### Service Management
+
+```bash
+# Linux: Check service status
+sudo systemctl status autocommit-*
+
+# Windows: Check service status (requires admin)
+sc query "AutoCommit Service"
+```
 
 ## How It Works
 
@@ -172,21 +238,38 @@ MIT License - see LICENSE file for details
 ## Troubleshooting
 
 ### Service won't start
-- Ensure you have sudo/administrator privileges
-- Check system logs: `journalctl -u autocommit-*` (Linux)
+- **Linux**: Ensure you have sudo privileges
+- **Windows**: Run commands as administrator and ensure pywin32 is installed
+- Check system logs:
+  - Linux: `journalctl -u autocommit-*`
+  - Windows: Event Viewer → Windows Logs → Application
 
 ### Commits not happening
 - Verify project is open in a supported editor
 - Check git status: `git status`
 - Review service status: `autocommit status /path/to/project`
+- Ensure the project directory is a valid git repository
 
 ### Permission errors
-- Linux: Ensure user has access to `/etc/systemd/system/`
-- Windows: Run commands as administrator
+- **Linux**: Ensure user has access to `/etc/systemd/system/`
+- **Windows**: Run commands as administrator
+- **General**: Check file permissions on the project directory
+
+### Windows-specific issues
+- Install pywin32: `pip install pywin32`
+- Ensure Windows Services are enabled
+- Check Windows Event Log for detailed error messages
+- Try running the daemon manually: `autocommit daemon /path/to/project`
+
+### Common issues
+- **"Not a git repository"**: Run `git init` in your project directory
+- **"No changes detected"**: Make sure you have uncommitted changes
+- **"Project not open"**: Open your project in a supported editor (VS Code, Atom, etc.)
+- **"Service installation failed"**: Check system permissions and logs
 
 ## Roadmap
 
-- [ ] Windows service support
+- [x] Windows service support
 - [ ] macOS support
 - [ ] Custom commit message templates
 - [ ] Git hooks integration
