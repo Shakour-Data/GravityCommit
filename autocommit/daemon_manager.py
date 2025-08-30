@@ -175,13 +175,24 @@ class DaemonManager:
 
         script_path = Path(__file__).parent / "cli.py"
 
+        # Get user more robustly
+        import getpass
+        user = None
+        try:
+            user = os.getlogin()
+        except Exception:
+            try:
+                user = getpass.getuser()
+            except Exception:
+                user = "root"
+
         return f"""[Unit]
 Description=AutoCommit Service for {self.project_path.name}
 After=network.target
 
 [Service]
 Type=simple
-User={os.getlogin()}
+User={user}
 WorkingDirectory={self.project_path}
 ExecStart={python_path} {script_path} daemon {self.project_path}
 Restart=always
