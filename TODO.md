@@ -55,3 +55,11 @@
   - [x] Check logging functionality
   - [x] Update README with any new features or fixes
   - [x] Create test scripts for automated testing
+
+## Package Management
+- [x] Update Process: 
+  - If installed from PyPI: `pip install --upgrade gravitycommit`
+  - If installed from source: Pull latest changes and run `pip install -e .`
+- [x] Uninstall Process: `pip uninstall gravitycommit`
+- [x] Note: The package does not have custom update or uninstall logic; these are standard pip operations
+- [x] Project-specific Removal: Use `autocommit remove <project_path>` to remove autocommit service from a specific project
