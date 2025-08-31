@@ -98,3 +98,19 @@ class CommitGenerator:
                 category = "other"
             categories[category] = categories.get(category, 0) + 1
         return categories
+
+    def generate_single_file_commit(self, file_path: str, change_type: str) -> str:
+        """
+        Generate a commit message for a single file change
+        change_type: 'added', 'modified', or 'deleted'
+        """
+        file_desc = self._get_file_description(file_path)
+
+        if change_type == 'added':
+            return f"Add {file_desc}"
+        elif change_type == 'modified':
+            return f"Update {file_desc}"
+        elif change_type == 'deleted':
+            return f"Remove {file_desc}"
+        else:
+            return f"Update {file_desc}"

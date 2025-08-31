@@ -91,14 +91,34 @@ def daemon(project_path):
     def commit_callback():
         if monitor.is_project_open():
             if git_ops.has_changes():
-                staged_files = git_ops.stage_changes()
-                if staged_files:
-                    changes = commit_gen.analyze_changes(staged_files)
-                    message = commit_gen.generate_commit(changes)
-                    if git_ops.commit(message):
-                        click.echo(f"✓ Committed: {message}")
+                status = git_ops.check_status()
+                changed_files = status['unstaged'] + status['untracked']
+
+                if changed_files:
+                    committed_count = 0
+                    for file_path in changed_files:
+                        # Determine change type
+                        if file_path in status['untracked']:
+                            change_type = 'added'
+                        elif file_path in status['unstaged']:
+                            change_type = 'modified'
+                        else:
+                            change_type = 'modified'  # fallback
+
+                        # Generate commit message for this file
+                        message = commit_gen.generate_single_file_commit(file_path, change_type)
+
+                        # Commit this file separately
+                        if git_ops.commit_single_file(file_path, message):
+                            click.echo(f"✓ Committed {file_path}: {message}")
+                            committed_count += 1
+                        else:
+                            click.echo(f"✗ Failed to commit {file_path}")
+
+                    if committed_count == 0:
+                        click.echo("✗ No files were committed")
                     else:
-                        click.echo("✗ Commit failed")
+                        click.echo(f"✓ Committed {committed_count} file(s)")
                 else:
                     click.echo("No changes to commit")
             else:

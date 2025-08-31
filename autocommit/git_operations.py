@@ -49,6 +49,21 @@ class GitOperations:
             print(f"Commit failed: {e}")
             return False
 
+    def commit_single_file(self, file_path: str, message: str) -> bool:
+        """Commit a single file with given message"""
+        if not self.repo:
+            return False
+
+        try:
+            # Stage only the specific file
+            self.repo.index.add([file_path])
+            # Commit only this file
+            self.repo.index.commit(message)
+            return True
+        except Exception as e:
+            print(f"Commit failed for {file_path}: {e}")
+            return False
+
     def check_status(self) -> Dict[str, List[str]]:
         """Check repository status and return changes"""
         if not self.repo:
