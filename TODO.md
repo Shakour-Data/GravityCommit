@@ -63,9 +63,18 @@
   - [x] Create test scripts for automated testing
 
 ## Package Management
-- [x] Update Process: 
+- [x] Update Process:
   - If installed from PyPI: `pip install --upgrade gravitycommit`
   - If installed from source: Pull latest changes and run `pip install -e .`
 - [x] Uninstall Process: `pip uninstall gravitycommit`
 - [x] Note: The package does not have custom update or uninstall logic; these are standard pip operations
 - [x] Project-specific Removal: Use `autocommit remove <project_path>` to remove autocommit service from a specific project
+
+## Extend Project Open Detection for Unsupported Environments
+- [x] Extend ProjectMonitor class in autocommit/project_monitor.py to support configurable editor processes and environment variables
+- [x] Add manual override option to force project as "open"
+- [x] Update config_manager.py to handle new configuration options for custom editors and manual override
+- [x] Modify is_project_open method to include new detection logic
+- [x] Update CLI to support new options in setup command
+- [ ] Test the extended detection logic
+- [ ] Update documentation if necessary
