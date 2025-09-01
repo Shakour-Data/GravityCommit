@@ -15,6 +15,11 @@ class ProjectMonitor:
     def is_project_open(self) -> bool:
         """Check if the project is currently open in an editor"""
         try:
+            # First check for VSCode remote environment indicators
+            if self._is_vscode_remote_connected():
+                return True
+
+            # Fallback to process-based detection
             processes = self.get_editor_processes()
             for proc in processes:
                 try:
@@ -63,3 +68,25 @@ class ProjectMonitor:
             return False
         except Exception:
             return False
+
+    def _is_vscode_remote_connected(self) -> bool:
+        """Check if VSCode is connected in a remote environment"""
+        import os
+
+        # Check for VSCode remote environment variables
+        vscode_indicators = [
+            'VSCODE_IPC_HOOK_CLI',
+            'TERM_PROGRAM=vscode',
+            'CODESPACE_VSCODE_FOLDER'
+        ]
+
+        for indicator in vscode_indicators:
+            if '=' in indicator:
+                env_name, expected_value = indicator.split('=', 1)
+                if os.getenv(env_name) == expected_value:
+                    return True
+            else:
+                if os.getenv(indicator):
+                    return True
+
+        return False
