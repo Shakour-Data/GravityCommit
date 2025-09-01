@@ -22,7 +22,10 @@ def cli():
 @cli.command()
 @click.argument('project_path', type=click.Path(exists=True))
 @click.option('--interval', default=10, help='Commit interval in minutes')
-def setup(project_path, interval):
+@click.option('--manual-override-open', is_flag=True, help='Manually override project open detection')
+@click.option('--additional-editors', default='', help='Comma-separated list of additional editor process names')
+@click.option('--custom-env-vars', default='', help='Comma-separated list of custom environment variables for detection')
+def setup(project_path, interval, manual_override_open, additional_editors, custom_env_vars):
     """Setup automatic commits for a project"""
     project_path = Path(project_path).resolve()
 
@@ -34,6 +37,15 @@ def setup(project_path, interval):
     # Create configuration
     config = ConfigManager(str(project_path))
     config.set_interval(interval)
+    config.set_manual_override_open(manual_override_open)
+
+    if additional_editors:
+        editors_list = [e.strip() for e in additional_editors.split(',') if e.strip()]
+        config.set_additional_editor_processes(editors_list)
+
+    if custom_env_vars:
+        env_vars_list = [e.strip() for e in custom_env_vars.split(',') if e.strip()]
+        config.set_custom_env_vars(env_vars_list)
 
     # Install service
     daemon = DaemonManager(str(project_path))
