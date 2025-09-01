@@ -1,50 +1,120 @@
 # GravityCommit
 
+[![Version](https://img.shields.io/badge/version-1.5.0-blue.svg)](https://github.com/your-repo/gravitycommit)
+[![Python](https://img.shields.io/badge/python-3.7+-green.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-MIT-red.svg)](LICENSE)
+
 Automatic commit package for Python projects. Automatically commits changes at specified intervals when your project is open in an editor.
 
-## Features
+## 📋 Table of Contents
 
-- 🚀 Automatic commits at configurable intervals
-- 📝 Intelligent commit message generation
-- 👁️ Only commits when project is open in an editor
-- 🔧 Cross-platform support (Linux, Windows)
-- ⚙️ System service integration
-- 🎯 Git-aware change detection
+- [Features](#features)
+- [Architecture](#architecture)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Supported Platforms](#supported-platforms)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
 
-## Installation
+## ✨ Features
 
-### From Local Source
+| Feature | Description | Status |
+|---------|-------------|--------|
+| 🚀 Automatic Commits | Configurable interval-based commits | ✅ Complete |
+| 📝 Smart Messages | AI-powered commit message generation | ✅ Complete |
+| 👁️ Project Monitoring | Editor detection for active projects | ✅ Complete |
+| 🔧 Cross-Platform | Linux, Windows, macOS support | ✅ Complete |
+| ⚙️ Service Integration | System service management | ✅ Complete |
+| 🎯 Git Integration | Advanced git operations | ✅ Complete |
+| 📊 Statistics | Commit analytics and reporting | ✅ Complete |
+| 🔄 Undo Management | Safe commit undo functionality | ✅ Complete |
+| 📢 Notifications | Multi-channel notification system | ✅ Complete |
+| 🔗 CI/CD Integration | GitHub Actions, GitLab CI, Jenkins | ✅ Complete |
+
+## 🏗️ Architecture
+
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   CLI Interface │    │  Configuration  │    │  Project Monitor│
+│                 │    │   Manager       │    │                 │
+│ • setup         │◄──►│ • .autocommit   │◄──►│ • Editor detect │
+│ • status        │    │ • intervals     │    │ • VS Code       │
+│ • remove        │    │ • settings      │    │ • PyCharm       │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         ▼                       ▼                       ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Scheduler     │    │ Commit Generator│    │  Git Operations│
+│                 │    │                 │    │                 │
+│ • timed tasks   │◄──►│ • AI messages   │◄──►│ • staging       │
+│ • intervals     │    │ • file analysis │    │ • committing    │
+│ • background    │    │ • type detection│    │ • status check  │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         ▼                       ▼                       ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│Service Manager  │    │   Statistics    │    │ Notifications   │
+│                 │    │                 │    │                 │
+│ • systemd       │◄──►│ • analytics     │◄──►│ • desktop       │
+│ • Windows svc   │    │ • reports       │    │ • email         │
+│ • daemon        │    │ • metrics       │    │ • webhook       │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+## 📦 Installation
+
+### System Requirements
+
+| Component | Requirement | Notes |
+|-----------|-------------|-------|
+| Python | 3.7+ | Required for all platforms |
+| Git | Latest | Must be installed and configured |
+| Linux | systemd | For service management |
+| Windows | Administrator rights | For service installation |
+| macOS | System permissions | For service management |
+
+### Quick Install
 
 ```bash
-# If you have the source code locally
-cd /path/to/gravitycommit
+# Install from PyPI
+pip install gravitycommit
+
+# Or install from source
+git clone https://github.com/your-repo/gravitycommit.git
+cd gravitycommit
 pip install -e .
 ```
 
-### Direct Installation
+### Platform-Specific Installation
 
+#### Linux
 ```bash
-pip install /path/to/gravitycommit
+# Standard installation
+pip install gravitycommit
+
+# With development dependencies
+pip install -e .[dev]
 ```
 
-### Windows Requirements
-
-For Windows service support, install the optional Windows dependencies:
-
+#### Windows
 ```bash
-pip install /path/to/gravitycommit[windows]
-# or if installing from source:
+# Install with Windows service support
+pip install gravitycommit[windows]
+
+# Or from source
 pip install -e .[windows]
 ```
 
-This will install `pywin32` which is required for Windows service management.
+#### macOS
+```bash
+# Standard installation
+pip install gravitycommit
 
-## Requirements
-
-- Python 3.7+
-- Git repository
-- Linux: systemd (for service management)
-- Windows: Administrator privileges (for service management)
+# Grant necessary permissions for service management
+# System Preferences → Security & Privacy → Full Disk Access
+```
 
 ## Quick Start
 
@@ -277,8 +347,42 @@ MIT License - see LICENSE file for details
 - [x] Linux systemd support
 - [x] Cross-platform compatibility
 - [x] Intelligent commit message generation
-- [ ] macOS support
+- [x] macOS support
 - [ ] Custom commit message templates
 - [ ] Git hooks integration
 - [ ] Web interface for monitoring
 - [ ] Plugin system for custom editors
+
+## Diagrams and Tables
+
+### System Architecture Diagram
+
+```plaintext
++-------------------+       +-------------------+       +-------------------+
+|   CLI Interface   |<----->| Configuration Mgr |<----->| Project Monitor   |
++-------------------+       +-------------------+       +-------------------+
+         |                           |                           |
+         v                           v                           v
++-------------------+       +-------------------+       +-------------------+
+|    Scheduler      |<----->| Commit Generator  |<----->|   Git Operations  |
++-------------------+       +-------------------+       +-------------------+
+         |                           |                           |
+         v                           v                           v
++-------------------+       +-------------------+       +-------------------+
+| Service Manager   |<----->|   Statistics      |<----->|  Notifications    |
++-------------------+       +-------------------+       +-------------------+
+```
+
+### Feature Status Table
+
+| Feature                 | Status    | Notes                          |
+|-------------------------|-----------|--------------------------------|
+| Automatic Commits       | Complete  | Interval-based commits         |
+| Smart Commit Messages   | Complete  | AI-powered message generation  |
+| Project Monitoring      | Complete  | Editor detection               |
+| Cross-Platform Support  | Complete  | Linux, Windows, macOS          |
+| Service Integration     | Complete  | systemd, Windows Service       |
+| Git Operations          | Complete  | Staging, committing, status    |
+| Statistics & Reporting  | Complete  | Commit analytics               |
+| Undo Management         | Complete  | Safe undo functionality        |
+| Notifications           | Complete  | Email, desktop, webhook, Slack |
