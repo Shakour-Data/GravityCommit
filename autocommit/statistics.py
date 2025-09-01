@@ -59,6 +59,7 @@ class Statistics:
             'test': 0,
             'deploy': 0,
             'review': 0,
+            'feat': 0,
         }
 
         for commit in self.repo.iter_commits():
