@@ -6,8 +6,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
     name="gravitycommit",
     version="1.5.1",
-    author="BlackBoxAI",
-    author_email="",
+    author="Shakour Alishahi",
+    author_email="shakouralishahi@gmail.com",
     description="Automatic commit package for Python projects",
     long_description=long_description,
     long_description_content_type="text/markdown",
