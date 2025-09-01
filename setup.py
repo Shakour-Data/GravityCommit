@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="gravitycommit",
-    version="1.5.1",
+    version="1.5.5",
     author="Shakour Alishahi",
     author_email="shakouralishahi@gmail.com",
     description="Automatic commit package for Python projects",

@@ -2,7 +2,7 @@
 GravityCommit - Automatic commit package for Python projects
 """
 
-__version__ = "1.0.0"
+__version__ = "1.5.5"
 __author__ = "BlackBoxAI"
 
 from .config_manager import ConfigManager
