@@ -46,3 +46,6 @@ Thumbs.db
 # Distribution
 *.tar.gz
 *.zip
+
+# Test projects
+test_project/
