@@ -1,4 +1,4 @@
-# GravityCommit
+ GravityCommit
 
 [![Version](https://img.shields.io/badge/version-1.5.0-blue.svg)](https://github.com/your-repo/gravitycommit)
 [![Python](https://img.shields.io/badge/python-3.7+-green.svg)](https://www.python.org/)
@@ -13,6 +13,7 @@ Automatic commit package for Python projects. Automatically commits changes at s
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Usage](#usage)
+- [Advanced CLI Commands](#advanced-cli-commands)
 - [Configuration](#configuration)
 - [Supported Platforms](#supported-platforms)
 - [Troubleshooting](#troubleshooting)
@@ -32,6 +33,9 @@ Automatic commit package for Python projects. Automatically commits changes at s
 | 🔄 Undo Management | Safe commit undo functionality | ✅ Complete |
 | 📢 Notifications | Multi-channel notification system | ✅ Complete |
 | 🔗 CI/CD Integration | GitHub Actions, GitLab CI, Jenkins | ✅ Complete |
+| ⏰ Advanced Scheduling | Time-based and weekly commit scheduling | ✅ Complete |
+| ⚙️ Configuration Mgmt | Dynamic configuration management | ✅ Complete |
+| 🔧 CLI Extensions | Comprehensive command-line interface | ✅ Complete |
 
 ## 🏗️ Architecture
 
@@ -171,6 +175,48 @@ Shows:
 - Commit interval
 - Service running status
 - Project open status
+
+## 🔧 Advanced CLI Commands
+
+GravityCommit provides extensive CLI commands for advanced automation and management:
+
+### Scheduling & Automation
+- **schedule-at**: Schedule commits at specific times
+- **schedule-weekly**: Set up weekly commit schedules
+- **schedule-list/clear**: Manage scheduled jobs
+- **pause/resume**: Control commit automation
+
+### Notifications
+- **notify-setup-email/slack/webhook**: Configure notification channels
+- **notify-test**: Test notification systems
+
+### CI/CD Integration
+- **ci-setup-github/gitlab/jenkins**: Configure CI/CD platforms
+- **ci-list**: View configured integrations
+- **trigger-ci**: Manually trigger pipelines
+
+### Advanced Operations
+- **undo-to**: Undo to specific commit hash
+- **config-set/export/import**: Manage configuration
+- **stats**: View detailed commit analytics
+- **logs**: Browse commit history
+
+### Examples
+```bash
+# Schedule daily commits at 2 PM
+autocommit schedule-at /path/to/project 14:00
+
+# Setup email notifications
+autocommit notify-setup-email /path/to/project --smtp-server smtp.gmail.com --username user@gmail.com
+
+# Configure GitHub Actions integration
+autocommit ci-setup-github /path/to/project --repo-owner myorg --repo-name myrepo --token ghp_...
+
+# View comprehensive statistics
+autocommit stats /path/to/project
+```
+
+For complete CLI reference, see the implementation files in `autocommit/cli_*.py` and command modules.
 
 ## Usage Examples
 

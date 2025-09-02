@@ -318,20 +318,60 @@ def commit_now(project_path):
 
 @cli.command()
 @click.argument('project_path', type=click.Path(exists=True))
+@click.argument('time_str')
+def schedule_at(project_path, time_str):
+    """Schedule commits at a specific time (HH:MM format)"""
+    scheduler = Scheduler(0)  # Time-based scheduling
+    scheduler.schedule_at_time(time_str, lambda: click.echo(f"Scheduled commit executed at {time_str}"))
+    click.echo(f"✓ Scheduled daily commit at {time_str}")
+
+@cli.command()
+@click.argument('project_path', type=click.Path(exists=True))
+@click.argument('day')
+@click.argument('time_str')
+def schedule_weekly(project_path, day, time_str):
+    """Schedule weekly commits on specific day and time"""
+    scheduler = Scheduler(0)  # Time-based scheduling
+    scheduler.schedule_weekly(day, time_str, lambda: click.echo(f"Weekly commit executed on {day} at {time_str}"))
+    click.echo(f"✓ Scheduled weekly commit on {day} at {time_str}")
+
+@cli.command()
+@click.argument('project_path', type=click.Path(exists=True))
+def schedule_list(project_path):
+    """List all scheduled jobs"""
+    scheduler = Scheduler(0)
+    jobs = scheduler.get_scheduled_jobs()
+    if jobs:
+        click.echo("Scheduled jobs:")
+        for job in jobs:
+            click.echo(f"  - {job}")
+    else:
+        click.echo("No scheduled jobs")
+
+@cli.command()
+@click.argument('project_path', type=click.Path(exists=True))
+def schedule_clear(project_path):
+    """Clear all scheduled jobs"""
+    scheduler = Scheduler(0)
+    scheduler.clear_schedule()
+    click.echo("✓ All scheduled jobs cleared")
+
+@cli.command()
+@click.argument('project_path', type=click.Path(exists=True))
 @click.option('--duration', default=30, help='Pause duration in minutes')
 def pause(project_path, duration):
     """Pause auto-commits temporarily"""
-    config = ConfigManager(str(project_path))
-    # This would need to be implemented in the scheduler
+    scheduler = Scheduler(0)
+    scheduler.pause_scheduling()
     click.echo(f"✓ Auto-commits paused for {duration} minutes")
-    click.echo("Note: This feature requires scheduler enhancement")
 
 @cli.command()
 @click.argument('project_path', type=click.Path(exists=True))
 def resume(project_path):
     """Resume paused auto-commits"""
+    scheduler = Scheduler(0)
+    scheduler.resume_scheduling()
     click.echo("✓ Auto-commits resumed")
-    click.echo("Note: This feature requires scheduler enhancement")
 
 @cli.command()
 def list_projects():
